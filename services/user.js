@@ -8,7 +8,7 @@ const dynamoDBClient = new DynamoDBClient({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 });
 
-const table = 'users';
+const table = 'user';
 
 exports.createUser = async data => {
     return new Promise(async (resolve, reject) => {

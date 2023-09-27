@@ -6,7 +6,6 @@ exports.ValidateRequest = data => {
 
     validator.addSchema(getSchemaHeader(), "/headers");
     validator.addSchema(getSchemaBody(), "/body");
-
     const resultValidate = validator.validate(
         {
             headers: data.headers,
@@ -14,12 +13,11 @@ exports.ValidateRequest = data => {
         },
         userSchema()
     );
-    console.log(resultValidate);
     if (resultValidate.errors.length > 0) {
 
         const arrayErrors = [];
         for (const i of resultValidate.errors) {
-            arrayErrors.push(i.message);
+            arrayErrors.push(messageError(i));
         }
         return { status: 1, message: arrayErrors };
 
@@ -29,6 +27,36 @@ exports.ValidateRequest = data => {
 };
 
 
+const messageError = (i) => {
+    typeError = '';
+    console.log(i)
+    switch (i.name) {
+        case "required":
+            typeError = `${i.argument} es un campo requerido`
+            break;
+        case "const":
+            typeError = `Solo acepta ${i.argument} en el campo ${i.path[1]} que se encuentra en el ${i.path[0]} `
+            break;
+        case "format":
+            typeError = `Formato incorrecto en el campo ${i.path[1]} que se encuentra en el ${i.path[0]}`
+            break;
+        case "minLength":
+            typeError = ` campo ${i.path[1]} debe ser mayor a ${i.argument} caracteres  que se encuentra en el ${i.path[0]} `
+            break;
+        case "maxLength":
+            typeError = ` campo ${i.path[1]} debe ser menor a ${i.argument} caracteres  que se encuentra en el ${i.path[0]} `
+            break;
+
+
+
+        default:
+            break;
+    }
+
+    return typeError;
+
+
+}
 
 const getSchemaHeader = () => {
     return {
@@ -52,6 +80,9 @@ const getSchemaHeader = () => {
     };
 };
 
+
+
+
 const userSchema = () => {
     return {
         id: "/user",
@@ -69,13 +100,15 @@ const getSchemaBody = () => {
         id: "/body",
         type: "object",
         properties: {
-            name: { type: 'string', maxLengh: 255 },
-            email: { type: 'string', format: 'email', maxLengh: 255 },
-            lastname: { type: 'string', maxLengh: 255 }
+            name: { type: 'string', maxLength: 255, minLength: 3 },
+            email: { type: 'string', format: 'email', maxLength: 255, minLength: 3 },
+            lastname: { type: 'string', maxLength: 255, minLength: 3 }
         },
         required: ['name', 'email', 'lastname'],
     };
 };
+
+
 
 
 
