@@ -46,9 +46,10 @@ const getUsers = async (req, res) => {
     try {
 
         sendRegisterLogs("getUsers call");
-
         const users = await services.getUsers();
-        return success(res, users);
+        const response = success(users);
+        return res.status(response.code).json(response);
+
     } catch (error) {
 
         console.log(error);
@@ -73,9 +74,9 @@ const getUsersById = async (req, res) => {
         sendRegisterLogs(id);
 
         const users = await services.getUsersById(id);
-        const response = success(res, users);
+        const response = success(users);
         sendRegisterLogs("CreateUser response: ");
-        sendRegisterLogs(response);
+        sendRegisterLogs(JSON.stringify(response));
         return res.status(response.code).json(response);
 
 
