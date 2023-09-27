@@ -29,7 +29,6 @@ exports.ValidateRequest = data => {
 
 const messageError = (i) => {
     typeError = '';
-    console.log(i)
     switch (i.name) {
         case "required":
             typeError = `${i.argument} es un campo requerido`

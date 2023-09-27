@@ -1,3 +1,4 @@
+const { sendRegisterLogs } = require('../loggers/cloudwath');
 const services = require('../services/user');
 const ValidatorJsonSchema = require('../utils/jsonschema');
 const { success, tecnicalError, created, badRequest } = require('../utils/mapperResponse');
@@ -6,30 +7,55 @@ const createUser = async (req, res) => {
 
     try {
 
+        sendRegisterLogs("CreateUser call Body:");
+        sendRegisterLogs(JSON.stringify(req.body));
+
+
+
         const statusValidatorDataEvent = ValidatorJsonSchema.ValidateRequest(req);
 
         if (statusValidatorDataEvent.status === 1) {
 
-            return badRequest(res, statusValidatorDataEvent.message)
+            const response = badRequest(statusValidatorDataEvent.message);
+            sendRegisterLogs("CreateUser Errors: ", "ERROR");
+            sendRegisterLogs(JSON.stringify(response), "ERROR");
+            return res.status(response.code).json(response);
         }
 
         const data = req.body;
         await services.createUser(data);
-        return created(res, { msg: "Usuario creado con exito" })
+        const response = created({ msg: "Usuario creado con exito" })
+        sendRegisterLogs("CreateUser response: ");
+        sendRegisterLogs(JSON.stringify(response));
+        return res.status(response.code).json(response);
 
     } catch (error) {
 
-        return tecnicalError(res);
+        sendRegisterLogs("CreateUser Errors: ", "ERROR");
+        sendRegisterLogs(JSON.stringify(error), "ERROR");
+        const response = tecnicalError();
+        sendRegisterLogs("CreateUser response: ", "ERROR");
+        sendRegisterLogs(JSON.stringify(response), "ERROR");
+        return res.status(response.code).json(response);
     }
 }
 
 const getUsers = async (req, res) => {
 
     try {
+
+        sendRegisterLogs("getUsers call");
+
         const users = await services.getUsers();
         return success(res, users);
     } catch (error) {
-        return tecnicalError(res);
+
+        sendRegisterLogs("CreateUser Errors: ", "ERROR");
+        sendRegisterLogs(JSON.stringify(error), "ERROR");
+        const response = tecnicalError();
+        sendRegisterLogs("CreateUser response: ", "ERROR");
+        sendRegisterLogs(JSON.stringify(response), "ERROR");
+        return res.status(response.code).json(response);
 
     }
 
@@ -40,12 +66,25 @@ const getUsersById = async (req, res) => {
 
     try {
         const id = req.params.id;
+
+        sendRegisterLogs("getUsersById call id: ");
+        sendRegisterLogs(id);
+
         const users = await services.getUsersById(id);
-        return success(res, users);
+        const response = success(res, users);
+        sendRegisterLogs("CreateUser response: ");
+        sendRegisterLogs(response);
+        return res.status(response.code).json(response);
+
 
     } catch (error) {
 
-        return tecnicalError(res);
+        sendRegisterLogs("CreateUser Errors: ", "ERROR");
+        sendRegisterLogs(JSON.stringify(error), "ERROR");
+        const response = tecnicalError();
+        sendRegisterLogs("CreateUser response: ", "ERROR");
+        sendRegisterLogs(JSON.stringify(response), "ERROR");
+        return res.status(response.code).json(response);
 
     }
 

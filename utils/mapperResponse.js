@@ -1,53 +1,43 @@
-exports.success = (res, data = {}) => {
+exports.success = (data = {}) => {
 
-    const config = {
+    return {
         code: 200,
         msg: "SUCCESS",
         data: data || {}
     }
 
-    return response(res, config)
 
 }
 
-exports.created = (res, data = {}) => {
+exports.created = (data = {}) => {
 
-    const config = {
+    return {
         code: 201,
         msg: "CREATED",
         data: data || {}
     }
 
-    return response(res, config)
 
 }
 
-exports.badRequest = (res, errors = {}) => {
+exports.badRequest = (errors = {}) => {
 
-    const config = {
+    return {
         code: 400,
         msg: "BAD REQUEST",
         errors: errors || {}
     }
-
-    return response(res, config)
-
 }
 
-exports.tecnicalError = (res, data = {}) => {
+exports.tecnicalError = (data = {}) => {
 
-    const config = {
+    return {
         code: 500,
         msg: "TECNICAL ERROR",
         data: data || {}
     }
 
-    return response(res, config)
 
 
 }
 
-const response = (res, config) => {
-
-    return res.status(config.code).json(config);
-}
