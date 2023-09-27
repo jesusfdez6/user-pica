@@ -1,13 +1,9 @@
 FROM node:18
+WORKDIR /usr/src/appCreateUser
 
-WORKDIR /app
-
-COPY package.json ./
-
+COPY package.json /usr/src/appCreateUser/
 RUN npm install
 
-COPY . .
-
+COPY . /usr/src/appCreateUser
 EXPOSE 3000
-
 CMD [ "npm", "start" ]

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: createuser
+  labels:
+    app: createuser-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: createuser
+  template:
+    metadata:
+      labels:
+        app: createuser-app
+        service: createuser
+    spec:
+      containers:
+        - name: createuser-container
+          image: jjlloobb/createuser:0.0.1
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: createuser
+  labels:
+    app: createuser-app
+    service: createuser
+spec:
+  type: NodePort
+  ports:
+    - port: 3000
+      targetPort : 3000
+      protocol: TCP
+  selector:
+    service: createuser
