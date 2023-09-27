@@ -31,6 +31,7 @@ const createUser = async (req, res) => {
 
     } catch (error) {
 
+        console.log(error);
         sendRegisterLogs("CreateUser Errors: ", "ERROR");
         sendRegisterLogs(JSON.stringify(error), "ERROR");
         const response = tecnicalError();
@@ -50,6 +51,7 @@ const getUsers = async (req, res) => {
         return success(res, users);
     } catch (error) {
 
+        console.log(error);
         sendRegisterLogs("CreateUser Errors: ", "ERROR");
         sendRegisterLogs(JSON.stringify(error), "ERROR");
         const response = tecnicalError();
@@ -79,6 +81,7 @@ const getUsersById = async (req, res) => {
 
     } catch (error) {
 
+        console.log(error);
         sendRegisterLogs("CreateUser Errors: ", "ERROR");
         sendRegisterLogs(JSON.stringify(error), "ERROR");
         const response = tecnicalError();
