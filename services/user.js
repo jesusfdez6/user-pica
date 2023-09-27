@@ -14,6 +14,7 @@ exports.createUser = async data => {
     return new Promise(async (resolve, reject) => {
         const ddbDocClient = DynamoDBDocumentClient.from(dynamoDBClient);
         data.id = uuidv4();
+        data.date = getDate();
         const params = {
             TableName: table,
             Item: data
@@ -69,5 +70,17 @@ exports.getUsersById = async (id) => {
     });
 };
 
+const getDate = () => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const mont = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+
+    const dateTransform = `${year}-${mont}-${day} ${hours}:${minutes}:${seconds}`;
+    return dateTransform;
+}
 
 

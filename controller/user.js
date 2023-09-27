@@ -1,6 +1,8 @@
 const { sendRegisterLogs } = require('../loggers/cloudwath');
 const services = require('../services/user');
-const ValidatorJsonSchema = require('../utils/jsonschema');
+const ValidatorJsonSchemaCreateUser = require('../utils/jsonschema-create-user');
+const ValidatorJsonSchemaHeaders = require('../utils/jsonschema-headers');
+
 const { success, tecnicalError, created, badRequest } = require('../utils/mapperResponse');
 
 const createUser = async (req, res) => {
@@ -12,7 +14,7 @@ const createUser = async (req, res) => {
 
 
 
-        const statusValidatorDataEvent = ValidatorJsonSchema.ValidateRequest(req);
+        const statusValidatorDataEvent = ValidatorJsonSchemaCreateUser.ValidateRequest(req);
 
         if (statusValidatorDataEvent.status === 1) {
 
@@ -46,6 +48,17 @@ const getUsers = async (req, res) => {
     try {
 
         sendRegisterLogs("getUsers call");
+
+        const statusValidatorDataEvent = ValidatorJsonSchemaHeaders.ValidateRequest(req);
+
+        if (statusValidatorDataEvent.status === 1) {
+
+            const response = badRequest(statusValidatorDataEvent.message);
+            sendRegisterLogs("CreateUser Errors: ", "ERROR");
+            sendRegisterLogs(JSON.stringify(response), "ERROR");
+            return res.status(response.code).json(response);
+        }
+
         const users = await services.getUsers();
         const response = success(users);
         return res.status(response.code).json(response);
@@ -71,7 +84,16 @@ const getUsersById = async (req, res) => {
         const id = req.params.id;
 
         sendRegisterLogs("getUsersById call id: ");
-        sendRegisterLogs(id);
+
+        const statusValidatorDataEvent = ValidatorJsonSchemaHeaders.ValidateRequest(req);
+
+        if (statusValidatorDataEvent.status === 1) {
+
+            const response = badRequest(statusValidatorDataEvent.message);
+            sendRegisterLogs("CreateUser Errors: ", "ERROR");
+            sendRegisterLogs(JSON.stringify(response), "ERROR");
+            return res.status(response.code).json(response);
+        }
 
         const users = await services.getUsersById(id);
         const response = success(users);

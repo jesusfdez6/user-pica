@@ -26,7 +26,6 @@ exports.ValidateRequest = data => {
     }
 };
 
-
 const messageError = (i) => {
     typeError = '';
     switch (i.name) {
