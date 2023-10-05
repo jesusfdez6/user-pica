@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: createuser-container
-          image: jjlloobb/createuser:0.0.1
+          image: jjlloobb/createuser:0.0.2
           ports:
             - containerPort: 3000
               protocol: TCP
